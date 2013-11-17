@@ -30,11 +30,8 @@ set_page.css('//a.photo-click').each do |link|
   end
 
   # Find the "Original" size image URL somewhere in the page JS
-  location = (image_page =~ /http:\/\/farm.*\.staticflickr\.com\/.*_o.jpg/)
-  if (location)
-    # Grab a chunk of the JS and strip off where the "[end]" token starts
-    roughly = image_page[location, 80]
-    real_image_url = roughly[0, roughly.index('[')]
+  real_image_url = image_page.scan(/http:\/\/farm.*\.staticflickr\.com\/.*_o.jpg/).first
+  if (real_image_url)
     # Pull down the image
     system("wget -P images " + real_image_url)
   end
